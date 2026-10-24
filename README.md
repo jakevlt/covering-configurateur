@@ -3,7 +3,7 @@
 Application web qui permet à un client de choisir son véhicule, de le visualiser en 3D dans la couleur et la finition de son choix, et d'obtenir immédiatement un devis pour un covering automobile et des prestations associées (PPF, vitres teintées, detailing). Un espace professionnel permet à l'atelier de gérer les devis reçus en ligne et de créer des devis au comptoir.
 
 > **Statut :** conception terminée, développement à venir.
-> Ce dépôt contient uniquement la documentation technique. Le code source est hébergé dans un dépôt privé.
+> Ce dépôt contient uniquement la documentation technique. Le code source est hébergé dans le dépôt privé [`jakevlt/covering-configurateur-app`](https://github.com/jakevlt/covering-configurateur-app) (accès sur demande).
 
 ---
 
