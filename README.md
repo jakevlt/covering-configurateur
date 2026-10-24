@@ -2,7 +2,7 @@
 
 Application web qui permet à un client de choisir son véhicule, de le visualiser en 3D dans la couleur et la finition de son choix, et d'obtenir immédiatement un devis pour un covering automobile et des prestations associées (PPF, vitres teintées, detailing). Un espace professionnel permet à l'atelier de gérer les devis reçus en ligne et de créer des devis au comptoir.
 
-> **Statut :** conception terminée, développement à venir.
+> **Statut :** prototype fonctionnel (étapes 1 à 7 terminées), déployé en accès privé ; mise en ligne publique en cours.
 > Ce dépôt contient uniquement la documentation technique. Le code source est hébergé dans le dépôt privé [`jakevlt/covering-configurateur-app`](https://github.com/jakevlt/covering-configurateur-app) (accès sur demande).
 
 ---
@@ -71,11 +71,11 @@ Les écrans sont responsives : sur mobile, les colonnes s'empilent et les tablea
 |---|---|---|
 | Front-end | **Vite + React + TypeScript** | Démarrage rapide, typage du moteur de prix. |
 | 3D | **three.js** via **@react-three/fiber** et **@react-three/drei** | Intégration native avec React, contrôles de caméra prêts à l'emploi. |
-| Style | CSS modules ou Tailwind | Thème sombre simple, variables de couleur centralisées. |
-| PDF | Génération côté client (ex. `@react-pdf/renderer`) | Pas de serveur nécessaire pour le PDF. |
-| Tests | **Vitest** | Tests unitaires du moteur de prix. |
-| Back-end | À définir à l'étape 5 (ex. Supabase ou petite API Node) | Enregistrement des devis, authentification de l'espace pro, envoi d'e-mails. |
-| Hébergement | À définir (ex. Vercel, Netlify) | Déploiement statique du front. |
+| Style | CSS simple + variables (`theme.css`) | Thème sombre, aucune dépendance. |
+| PDF | Impression navigateur (`window.print()` + CSS `@media print`) | Pas de serveur ni de bibliothèque PDF. |
+| Tests | **Vitest** + intégration continue GitHub Actions | Moteur de prix, stockage, numérotation, rendu des pages ; tests et build à chaque push. |
+| Back-end | **Supabase** (PostgreSQL + Auth) | Enregistrement des devis (numérotation côté base), authentification de l'espace pro, règles RLS. |
+| Hébergement | **Netlify** | Déploiement statique du front à chaque push sur `main`. |
 
 ---
 
@@ -259,7 +259,7 @@ Thème sombre façon studio automobile.
 - Collecte minimale : nom, e-mail, téléphone, configuration du véhicule.
 - Durée de conservation définie pour les devis non signés, suppression ou anonymisation au-delà.
 - Espace pro protégé par authentification ; aucune donnée client accessible publiquement.
-- Aucune clé d'API ou secret dans le code front ni dans le dépôt : variables d'environnement côté serveur uniquement.
+- Aucun secret dans le code front ni dans le dépôt : seule la clé publique Supabase (conçue pour le navigateur) est utilisée côté front ; l'accès aux données est verrouillé par les règles RLS de la base (le public peut seulement créer un devis, les comptes pro seuls lisent et modifient).
 - Photos des clients stockées dans un espace privé, accessibles uniquement à l'atelier.
 - Mentions légales et politique de confidentialité sur le site.
 
@@ -269,14 +269,14 @@ Thème sombre façon studio automobile.
 
 Chaque étape est validée (application lancée et testée) avant de passer à la suivante.
 
-- [ ] **1. Moteur de prix** — fonction de calcul + tests unitaires, sans interface.
-- [ ] **2. Écran Véhicule** — sélection marque / modèle / année et catégorie.
-- [ ] **3. Écran Personnalisation sans 3D** — couleurs, finition, options, prix en direct.
-- [ ] **4. Aperçu 3D** — modèles par catégorie, couleur et finition en direct.
-- [ ] **5. Écran Devis** — document, PDF, formulaire RGPD ; choix et mise en place du back-end.
-- [ ] **6. Espace pro** — authentification, liste et filtres des devis, devis au comptoir.
-- [ ] **7. Page d'accueil** — présentation de l'atelier et accès au simulateur.
-- [ ] **8. Mise en ligne** — vérifications sécurité, RGPD, performances et affichage mobile.
+- [x] **1. Moteur de prix** — fonction de calcul + tests unitaires, sans interface.
+- [x] **2. Écran Véhicule** — sélection marque / modèle / année et catégorie.
+- [x] **3. Écran Personnalisation sans 3D** — couleurs, finition, options, prix en direct.
+- [x] **4. Aperçu 3D** — modèles par catégorie (Kenney Car Kit, licence CC0), couleur et finition en direct.
+- [x] **5. Écran Devis** — document, PDF, formulaire RGPD ; back-end Supabase.
+- [x] **6. Espace pro** — authentification, liste et filtres des devis, devis au comptoir.
+- [x] **7. Page d'accueil** — présentation de l'atelier et accès au simulateur.
+- [ ] **8. Mise en ligne** — fait : déploiement Netlify (accès privé), dépendances sans faille connue, CI. Reste : mentions légales et politique de confidentialité réelles, ouverture publique.
 
 Évolutions possibles : envoi de photos de carrosserie, prise de rendez-vous en ligne, grille de tarifs éditable depuis l'espace pro, planning de l'atelier.
 
